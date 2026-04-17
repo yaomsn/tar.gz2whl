@@ -5,14 +5,12 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 强制使用新版node，消除警告
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2  # 已支持 Node.js 24
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.3.0  # 已支持 Node.js 24
         with:
           python-version: "3.10"
 
@@ -22,13 +20,12 @@ jobs:
 
       - name: Build wheel for Linux
         run: |
-          ls *.tar.gz
           tar zxf *.tar.gz
           cd $(ls -d */ | head -n1)
           python -m build --wheel
 
-      - name: Upload built wheel
-        uses: actions/upload-artifact@v4
+      - name: Upload wheel
+        uses: actions/upload-artifact@v4.4.0  # 已支持 Node.js 24
         with:
           name: linux-whl
           path: "*/dist/*.whl"
