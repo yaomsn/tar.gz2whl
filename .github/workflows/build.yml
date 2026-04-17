@@ -1,0 +1,25 @@
+name: Build Linux WHL
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.10"}
+
+      - name: Install tools
+        run: pip install wheel build
+
+      - name: Build wheel for Linux
+        run: |
+          tar zxf *.tar.gz
+          cd $(ls -d */ | head -n1)
+          python -m build --wheel
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-whl
+          path: "*/dist/*.whl"
